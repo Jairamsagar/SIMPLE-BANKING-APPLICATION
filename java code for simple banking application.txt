@@ -1,0 +1,145 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class BankAccount {
+    private double balance;
+    private String accountHolderName;
+    private String accountNumber;
+    private List<String> transactionHistory;
+
+    public BankAccount(String accountHolderName, String accountNumber) {
+        this.accountHolderName = accountHolderName;
+        this.accountNumber = accountNumber;
+        this.transactionHistory = new ArrayList<>();
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        if (balance <= 0) {
+            System.out.println("Invalid Amount");
+        } else {
+            this.balance = balance;
+            transactionHistory.add("Account opened with balance: " + balance);
+            System.out.println("Account opened with minimum balance: " + balance);
+        }
+    }
+
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            System.out.println("Deposit must be positive or greater than 0");
+        } else {
+            balance += amount;
+            transactionHistory.add("Deposited: " + amount + ", New balance: " + balance);
+            System.out.println("Deposit Successful. New balance: " + balance);
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount < 0 || amount > balance) {
+            System.out.println("Withdrawal must be positive and not greater than balance");
+        } else {
+            balance -= amount;
+            transactionHistory.add("Withdrew: " + amount + ", New balance: " + balance);
+            System.out.println("Amount withdrawal Successful. New balance: " + balance);
+        }
+    }
+
+    public void printTransactionHistory() {
+        System.out.println("Transaction History for Account: " + accountNumber);
+        for (String transaction : transactionHistory) {
+            System.out.println(transaction);
+        }
+    }
+
+    public void calculateInterest(double interestRate) {
+        double interest = balance * (interestRate / 100);
+        balance += interest;
+        transactionHistory.add("Interest added: " + interest + ", New balance: " + balance);
+        System.out.println("Interest added. New balance: " + balance);
+    }
+
+    public void transfer(BankAccount targetAccount, double amount) {
+        if (amount <= 0 || amount > balance) {
+            System.out.println("Transfer amount must be positive and not greater than balance");
+        } else {
+            this.balance -= amount;
+            targetAccount.balance += amount;
+            this.transactionHistory.add("Transferred: " + amount + " to " + targetAccount.accountNumber + ", New balance: " + this.balance);
+            targetAccount.transactionHistory.add("Received: " + amount + " from " + this.accountNumber + ", New balance: " + targetAccount.balance);
+            System.out.println("Transfer Successful. New balance: " + this.balance);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter account holder name: ");
+        String accountHolderName = scanner.nextLine();
+
+        System.out.print("Enter account number: ");
+        String accountNumber = scanner.nextLine();
+
+        BankAccount account = new BankAccount(accountHolderName, accountNumber);
+
+        System.out.print("Enter initial balance: ");
+        double initialBalance = scanner.nextDouble();
+        account.setBalance(initialBalance);
+
+        while (true) {
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Print Transaction History");
+            System.out.println("5. Calculate Interest");
+            System.out.println("6. Transfer Money");
+            System.out.println("7. Exit");
+            System.out.print("Choose an option: ");
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Enter deposit amount: ");
+                    double depositAmount = scanner.nextDouble();
+                    account.deposit(depositAmount);
+                    break;
+                case 2:
+                    System.out.print("Enter withdrawal amount: ");
+                    double withdrawalAmount = scanner.nextDouble();
+                    account.withdraw(withdrawalAmount);
+                    break;
+                case 3:
+                    System.out.println("Current balance: " + account.getBalance());
+                    break;
+                case 4:
+                    account.printTransactionHistory();
+                    break;
+                case 5:
+                    System.out.print("Enter interest rate: ");
+                    double interestRate = scanner.nextDouble();
+                    account.calculateInterest(interestRate);
+                    break;
+                case 6:
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter target account holder name: ");
+                    String targetAccountHolderName = scanner.nextLine();
+                    System.out.print("Enter target account number: ");
+                    String targetAccountNumber = scanner.nextLine();
+                    BankAccount targetAccount = new BankAccount(targetAccountHolderName, targetAccountNumber);
+                    System.out.print("Enter transfer amount: ");
+                    double transferAmount = scanner.nextDouble();
+                    account.transfer(targetAccount, transferAmount);
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose a valid option.");
+            }
+        }
+    }
+}
