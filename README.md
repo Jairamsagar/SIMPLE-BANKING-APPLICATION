@@ -1,6 +1,4 @@
-This Java-based BankAccount Management System allows users to manage their bank accounts with features such as deposits, withdrawals, balance checks, transaction history, interest calculation, and money transfers. The application demonstrates key Object-Oriented Programming (OOP) concepts and provides a user-friendly interface for interacting with the bank account.
-
-Features
+This Java-based BankAccount Management System allows users to manage their bank accounts with features such as deposits, withdrawals, balance checks, transaction history, interest calculation, and money transfers. The application demonstrates key Object-Oriented Programming (OOP) concepts and provides a user-friendly interface for interacting with the bank account with the following features 
 Account Management: Create and manage bank accounts with unique account numbers and holder names.
 Deposits and Withdrawals: Perform deposit and withdrawal operations with validation.
 Balance Inquiry: Check the current balance of the account.
